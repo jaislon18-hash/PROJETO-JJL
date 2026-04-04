@@ -7,16 +7,21 @@
 </head>
 <body>
 
-    <div class="login-container">
+    <div id="tela_login" class="login-container">
         <h2>Login</h2>
         <form id="loginForm">
             <input type="text" id="usuario" placeholder="Usuário" required>
             <input type="password" id="senha" placeholder="Senha" required>
             <button type="submit">Entrar</button>
-            <p id="mensagem"></p>
+            <p>Não tem login? <a class="redirecionar_cadastro" href="cadas.html">Cadastrar-se</a></p>
         </form>
     </div>
 
+    <dic id="chat_principal" class="chat-container">
+        <div class="chatHeader">
+            <h2>chat</h2>
+        </div>
+    </dic>
     <script src="script.js"></script>
 </body>
 </html>
