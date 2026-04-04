@@ -10,8 +10,10 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     const senhaCorreta = "1234";
 
     if (usuario === usuarioCorreto && senha === senhaCorreta) {
-        mensagem.style.color = "green";
-        mensagem.textContent = "Login realizado com sucesso!";
+        const chatP = document.getElementById('chat_principal')
+        const login = document.getElementById('tela_login')
+        chatP.style.display = 'flex';
+        login.style.display = 'none';
     } else {
         mensagem.style.color = "red";
         mensagem.textContent = "Usuário ou senha inválidos!";
