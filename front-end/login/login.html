@@ -14,16 +14,16 @@
             <input type="password" id="senha" placeholder="Senha" required>
             <button class="botao_login"type="submit">Entrar</button>           
         </form>
-        <p class="redirecionar_cadastro">Não tem login?</p><button class="botao_cadastrar" onclick="">Cadastrar-se</button>
+        <p class="redirecionar_cadastro">Não tem login?</p><button class="ir_para_cadastrar" onclick="redirecionarCD()">Cadastrar-se</button>
     </div>
 
-    <div id="tela_cadastro" class="cadasto_container">
+    <div id="tela_cadastro" class="cadastro_container">
         <h2>Cadastro</h2>
         <input type="text" id="nome" placeholder="Nome Completo">
         <input type="email" id="email" placeholder="Email">
         <input type="password" id="senha" placeholder="Senha">
 
-        <button onclick="cadastrar()">Cadastrar</button>
+        <button class="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
         <div class="link">
             <p>Já tem uma conta? <a href="../login/login.html">Faça login</a></p>
         </div>

@@ -25,6 +25,6 @@ function redirecionarCD(){
     const telaCadastro = document.getElementById('tela_cadastro')
     
     login.style.display = 'none';
-    telaCadastro.style.display = 'flex';
+    telaCadastro.style.display = 'inline';
 
 }
