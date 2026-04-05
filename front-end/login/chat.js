@@ -60,12 +60,12 @@ function cadastrar() {
 
         localStorage.setItem("usuario", JSON.stringify(usuario));
         alert("Cadastro realizado com sucesso!");
-        window.location.href = "../login/login.html";
+        window.location.href = "../login/chat.html";
     }
 
 function ValidaEmailSenha(email, senha) {
     const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const senhaValida = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const senhaValida = /^(?=.[a-z])(?=.[A-Z])(?=.*\d).{8,}$/;
 
     if (!emailValido.test(email)) {
         alert("Email inválido! Por favor, insira um email válido.");
@@ -77,6 +77,6 @@ function ValidaEmailSenha(email, senha) {
         alert("Senha inválida! A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.");
         return "Senha inválida";
     }
-
+ 
     return "Email e senha válidos!";
 }
