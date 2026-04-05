@@ -19,3 +19,5 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         mensagem.textContent = "Usuário ou senha inválidos!";
     }
 });
+
+document

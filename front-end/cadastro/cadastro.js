@@ -15,7 +15,7 @@ function cadastrar() {
 
         localStorage.setItem("usuario", JSON.stringify(usuario));
         alert("Cadastro realizado com sucesso!");
-        window.location.href = "../login/index.html";
+        window.location.href = "../login/login.html";
 
 
     }
