@@ -12,8 +12,6 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     if (usuario === usuarioCorreto && senha === senhaCorreta) {
         const chatP = document.getElementById('chat_principal')
         const login = document.getElementById('tela_login')
-        mensagem.style.color = "green";
-        mensagem.textContent = "Login realizado com sucesso!";
         chatP.style.display = 'flex';
         login.style.display = 'none';
     } else {

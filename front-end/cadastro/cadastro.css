@@ -31,7 +31,6 @@ input {
 
 button {
     width: 100%;
-    margin-bottom: 20px;
     padding: 10px;
     background: #4facfe;
     color: white;
@@ -41,24 +40,10 @@ button {
 }
 
 button:hover {
-    background: #1c65a5;
+    background: #17191a;
 }
 
 #mensagem {
     margin-top: 10px;
     font-size: 14px;
-}
-
-.chat-container{
-    display: none;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 300px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.redirecionar_cadastro {
-    margin-bottom: 100px;
 }
