@@ -20,4 +20,11 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     }
 });
 
-document
+function redirecionarCD(){
+    const login = document.getElementById('tela_login')
+    const telaCadastro = document.getElementById('tela_cadastro')
+    
+    login.style.display = 'none';
+    telaCadastro.style.display = 'flex';
+
+}
