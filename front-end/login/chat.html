@@ -10,11 +10,11 @@
     <div id="tela_login" class="login-container">
         <h2>Login</h2>
         <form id="loginForm">
-            <input type="text" id="usuario" placeholder="Usuário" required>
+            <input type="text" id="usuario" placeholder="Email" required>
             <input type="password" id="senha" placeholder="Senha" required>
             <button class="botao_login"type="submit">Entrar</button>           
         </form>
-        <p class="redirecionar_cadastro">Não tem login?</p><button class="ir_para_cadastrar" onclick="redirecionarCD()">Cadastrar-se</button>
+        <p class="redirecionar_cadastro">É novo aqui?</p><button class="ir_para_cadastrar" onclick="redirecionarCD()">Cadastrar-se</button>
     </div>
 
     <div id="tela_cadastro" class="cadastro_container">
@@ -25,7 +25,7 @@
 
         <button class="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
         <div class="link">
-            <p>Já tem uma conta? <a href="../login/chat.html">Faça login</a></p>
+            <p>Já tem uma conta?<button class="ir_para_cadastrar" onclick="redirecionarLG()">Faça login</button></p>
         </div>
     </div>
     

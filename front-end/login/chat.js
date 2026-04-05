@@ -1,82 +1,73 @@
 document.getElementById("loginForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const usuario = document.getElementById("usuario").value;
-    const senha = document.getElementById("senha").value;
-    const mensagem = document.getElementById("mensagem");
+    const usuarioInput = document.getElementById("usuario").value;
+    const senhaInput = document.getElementById("senha").value;
 
+    // Recupera os dados direto do localStorage
     const usuarioSalvo = JSON.parse(localStorage.getItem("usuario"));
 
     if (!usuarioSalvo) {
-        mensagem.style.color = "red";
-        mensagem.textContent = "Nenhum usuário cadastrado!";
+        alert("Nenhum usuário cadastrado!");
         return;
     }
-    if (usuario === usuarioSalvo.email && senha === usuarioSalvo.senha) {
-         const chatP = document.getElementById('chat_principal')
-        const login = document.getElementById('tela_login')
-        chatP.style.display = 'flex';
-        login.style.display = 'none';
-    }else {
-        mensagem.style.color = "red";
-        mensagem.textContent = "Usuário ou senha inválidos!";
+
+    // Valida se o usuário/email e senha coincidem
+    if (usuarioInput === usuarioSalvo.email && senhaInput === usuarioSalvo.senha) {
+        document.getElementById('chat_principal').style.display = 'block';
+        document.getElementById('tela_login').style.display = 'none';
+    } else {
+        alert("Usuário ou senha inválidos!");
     }
 });
-function redirecionarCD(){
-    const login = document.getElementById('tela_login')
-    const telaCadastro = document.getElementById('tela_cadastro')
-    
-    login.style.display = 'none';
-    telaCadastro.style.display = 'inline';
 
+function redirecionarCD(){
+    document.getElementById('tela_login').style.display = 'none';
+    document.getElementById('tela_cadastro').style.display = 'block';
 }
 
-
-let nomeglobal = "";
-let emailglobal = "";
-let senhaglobal = "";
+function redirecionarLG(){
+    document.getElementById('tela_login').style.display = 'block';
+    document.getElementById('tela_cadastro').style.display = 'none';
+}
 
 function cadastrar() {
-    nomeglobal = document.getElementById("nome").value;
-    emailglobal = document.getElementById("email").value;
-    senhaglobal = document.getElementById("senha_cadastro").value;
+    const nome = document.getElementById("nome").value;
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha_cadastro").value;
 
-
-    if(!nomeglobal || !emailglobal || !senhaglobal) {
+    if(!nome || !email || !senha) {
         alert("Por favor, preencha todos os campos!");  
         return;
     }
-    const validacao = ValidaEmailSenha(emailglobal, senhaglobal);
-    if (validacao !== "Email e senha válidos!") {
-        return;
-    }
 
-        const usuario = {
-            nome: nomeglobal,
-            email: emailglobal,
-            senha: senhaglobal
-        };
+    if (ValidaEmailSenha(email, senha)) {
+        const usuario = { nome, email, senha };
 
-
+        // Salva no localStorage (persiste mesmo após o refresh)
         localStorage.setItem("usuario", JSON.stringify(usuario));
+        
         alert("Cadastro realizado com sucesso!");
-        window.location.href = "../login/chat.html";
+        
+        // Em vez de window.location.href, apenas troque a tela para não perder o estado
+        redirecionarLG();
     }
+}
 
 function ValidaEmailSenha(email, senha) {
     const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const senhaValida = /^(?=.[a-z])(?=.[A-Z])(?=.*\d).{8,}$/;
+    // Removi a exigência complexa temporariamente para teste, ou mantenha se desejar
+    const senhaValida = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
     if (!emailValido.test(email)) {
-        alert("Email inválido! Por favor, insira um email válido.");
-        return "Email invalido";
-
+        alert("Email inválido!");
+        return false;
     }
 
     if (!senhaValida.test(senha)) {
-        alert("Senha inválida! A senha deve conter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas e números.");
-        return "Senha inválida";
+        alert("Senha inválida! Use 8 caracteres, maiúsculas, minúsculas e números.");
+        return false;
     }
  
-    return "Email e senha válidos!";
+    return true;
 }
