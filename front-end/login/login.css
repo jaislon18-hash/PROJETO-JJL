@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    background: linear-gradient(135deg, #2563EB, #259ceb);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,37 +16,14 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-h2 {
-    margin-bottom: 20px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-button {
-    width: 100%;
-    margin-bottom: 20px;
-    padding: 10px;
-    background: #4facfe;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #1c65a5;
-}
-
-#mensagem {
-    margin-top: 10px;
-    font-size: 14px;
+.cadasto_container {
+    display: none;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .chat-container{
@@ -59,6 +36,48 @@ button:hover {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+
+h2 {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-sizing: border-box;
+}
+
+.botao_login {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #2563EB;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.botao_login:hover {
+    background: #363af0;
+}
+
+#mensagem {
+    margin-top: 10px;
+    font-size: 14px;
+}
+.botao_cadastrar{
+    background: transparent;
+    border: transparent;
+    cursor:pointer ;
+    color:#0011ff;
+    font-size: 17px;
+}
+
+
 .redirecionar_cadastro {
-    margin-bottom: 100px;
+    margin-left: px;
 }

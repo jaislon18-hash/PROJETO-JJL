@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
@@ -12,16 +12,29 @@
         <form id="loginForm">
             <input type="text" id="usuario" placeholder="Usuário" required>
             <input type="password" id="senha" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
-            <p>Não tem login? <a class="redirecionar_cadastro" href="../cadastro/cadastro.html">Cadastrar-se</a></p>
+            <button class="botao_login"type="submit">Entrar</button>
+            <p class="redirecionar_cadastro">Não tem login?</p><button class="botao_cadastrar" type="cadastro_bt">Cadastrar-se</button>
         </form>
     </div>
 
-    <dic id="chat_principal" class="chat-container">
+    <div class="cadasto_container">
+        <h2>Cadastro</h2>
+        <input type="text" id="nome" placeholder="Nome Completo">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="senha" placeholder="Senha">
+
+        <button onclick="cadastrar()">Cadastrar</button>
+        <div class="link">
+            <p>Já tem uma conta? <a href="../login/login.html">Faça login</a></p>
+        </div>
+    </div>
+    
+    <div id="chat_principal" class="chat-container">
         <div class="chatHeader">
             <h2>chat</h2>
         </div>
-    </dic>
-    <script src="script.js"></script>
+    </div>
+
+    <script src="login.js"></script>
 </body>
 </html>

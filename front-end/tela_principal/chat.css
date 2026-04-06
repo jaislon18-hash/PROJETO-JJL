@@ -1,0 +1,18 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #2563EB, #259ceb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.chat-container{
+    display: none;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}

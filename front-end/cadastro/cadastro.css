@@ -1,13 +1,13 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    background: linear-gradient(135deg, #2563EB, #259ceb);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.login-container {
+.cadasto_container {
     background: white;
     padding: 30px;
     border-radius: 10px;
@@ -25,22 +25,22 @@ input {
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 15px;
     box-sizing: border-box;
 }
 
 button {
     width: 100%;
     padding: 10px;
-    background: #4facfe;
+    background: #2563EB;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
 }
 
 button:hover {
-    background: #17191a;
+    background: #363af0;
 }
 
 #mensagem {
