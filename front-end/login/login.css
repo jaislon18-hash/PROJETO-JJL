@@ -16,7 +16,7 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.cadasto_container {
+.cadastro_container {
     display: none;
     background: white;
     padding: 30px;
@@ -64,12 +64,24 @@ input {
 .botao_login:hover {
     background: #363af0;
 }
-
+.botao_cadastrar{
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #2563EB;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+.botao_cadastrar:hover{
+    background: #363af0;
+}
 #mensagem {
     margin-top: 10px;
     font-size: 14px;
 }
-.botao_cadastrar{
+.ir_para_cadastrar{
     background: transparent;
     border: transparent;
     cursor:pointer ;
