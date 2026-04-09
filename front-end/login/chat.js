@@ -4,7 +4,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     const usuarioInput = document.getElementById("usuario").value;
     const senhaInput = document.getElementById("senha").value;
 
-    // Recupera os dados direto do localStorage
+
     const usuarioSalvo = JSON.parse(localStorage.getItem("usuario"));
 
     if (!usuarioSalvo) {
@@ -12,7 +12,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
         return;
     }
 
-    // Valida se o usuário/email e senha coincidem
+
     if (usuarioInput === usuarioSalvo.email && senhaInput === usuarioSalvo.senha) {
         document.getElementById('chat_principal').style.display = 'block';
         document.getElementById('tela_login').style.display = 'none';
@@ -44,19 +44,18 @@ function cadastrar() {
     if (ValidaEmailSenha(email, senha)) {
         const usuario = { nome, email, senha };
 
-        // Salva no localStorage (persiste mesmo após o refresh)
+
         localStorage.setItem("usuario", JSON.stringify(usuario));
         
         alert("Cadastro realizado com sucesso!");
         
-        // Em vez de window.location.href, apenas troque a tela para não perder o estado
+  
         redirecionarLG();
     }
 }
 
 function ValidaEmailSenha(email, senha) {
-    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // Removi a exigência complexa temporariamente para teste, ou mantenha se desejar
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  
     const senhaValida = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
     if (!emailValido.test(email)) {
@@ -71,3 +70,62 @@ function ValidaEmailSenha(email, senha) {
  
     return true;
 }
+
+function adicionarNovoContato() {
+  const nome = prompt("Nome do novo contato:");
+  if (!nome) return;
+  
+  const novo = {
+    nome: nome,
+    mensagem: "Nova conversa",
+    foto: "https://via.placeholder.com/50"
+  };
+  
+  contatos.push(novo);
+  renderizarContatos();
+}
+
+
+const contatos = [
+  {
+    nome: "João",
+    mensagem: "E aí?",
+    foto: "https://via.placeholder.com/50"
+  },
+  {
+    nome: "Maria",
+    mensagem: "Tudo bem?",
+    foto: "https://via.placeholder.com/50"
+  }
+];
+
+
+function renderizarContatos() {
+  const lista = document.getElementById("listaContatos");
+  lista.innerHTML = ""; // limpa tudo
+
+  contatos.forEach(contato => {
+    adicionarContato(contato.nome, contato.mensagem, contato.foto);
+  });
+}
+
+function adicionarContato(nome, mensagem, foto) {
+  const template = document.getElementById("templateContato");
+  const clone = template.content.cloneNode(true);
+
+  clone.querySelector(".nome").textContent = nome;
+  clone.querySelector(".mensagem").textContent = mensagem;
+  clone.querySelector(".foto").src = foto;
+
+  const lista = document.getElementById("listaContatos");
+  if (lista) {
+    lista.appendChild(clone);
+  } else {
+    console.error("Elemento listaContatos não encontrado!");
+  }
+}
+
+// Inicializa a lista de contatos ao carregar
+document.addEventListener("DOMContentLoaded", renderizarContatos);
+
+

@@ -32,9 +32,25 @@
     <div id="chat_principal" class="chat-container">
         <div class="chatHeader">
             <h2>chat</h2>
+            <button onclick="adicionarNovoContato()">novo contato</button>
+        </div>
+        <div id="listaContatos" class="contatosLayout"></div>
+        <template id="templateContato">
+            <div class="contato">
+                <img src="foto.jpg" class="foto">
+                <div class="info">
+                    <span class="nome">Nome</span>
+                    <span class="mensagem">Última mensagem</span>
+                </div>
+            </div>
+        </template>
+        <div class="AreaChat">
+
         </div>
     </div>
 
     <script src="chat.js"></script>
 </body>
 </html>
+
+
