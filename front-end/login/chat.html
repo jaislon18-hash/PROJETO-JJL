@@ -32,7 +32,7 @@
     <div id="chat_principal" class="chat-container">
         <div class="chatHeader">
             <h2>chat</h2>
-            <button onclick="adicionarNovoContato()">novo contato</button>
+            <button class="botaoNovoContato" onclick="adicionarNovoContato()">novo contato</button>
         </div>
         <div id="listaContatos" class="contatosLayout"></div>
         <template id="templateContato">
@@ -45,7 +45,25 @@
             </div>
         </template>
         <div class="AreaChat">
-
+            <div class="AreaChat-Header">
+                <div id="fotoContatoChat" class="fotoContatoSelecionado">
+                    <img src="" id="imgContatoChat">
+                </div>
+                <div id="nomeContatoChat" class="nomeContatoSelecionado">
+                    Selecione um contato
+                </div>
+            </div>
+            <div id="mensagensChat" class="AreaChat-body">
+                <!-- Mensagens aparecerão aqui -->
+            </div>
+            <div class="digitacaoArea">
+                <input type="text" id="inputMensagem" placeholder="Digite uma mensagem...">
+                <button class="botaoEnviar" onclick="enviarMensagem()">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 
