@@ -1,203 +1,201 @@
-let contatoSelecionado = null;
 
-document.getElementById("loginForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+const API = "http://localhost:8080";
 
-    const usuarioInput = document.getElementById("usuario").value;
-    const senhaInput = document.getElementById("senha").value;
+let usuarioLogado = null;     
+let contatoSelecionado = null;   
+let contatos = [];               
+let ultimoTimestamp = 0;         
+let intervaloPoll = null;        
 
-    const usuarioSalvo = JSON.parse(localStorage.getItem("usuario"));
+async function post(rota, dados) {
+    const res = await fetch(API + rota, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados)
+    });
+    return res.json();
+}
 
-    if (!usuarioSalvo) {
-        alert("Nenhum usuário cadastrado!");
-        return;
-    }
+async function get(rota) {
+    const res = await fetch(API + rota);
+    return res.json();
+}
 
-    if (usuarioInput === usuarioSalvo.email && senhaInput === usuarioSalvo.senha) {
-        document.getElementById('chat_principal').style.display = 'flex';
-        document.getElementById('tela_login').style.display = 'none';
-        renderizarContatos();
-    } else {
-        alert("Usuário ou senha inválidos!");
-    }
+document.getElementById("loginForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const email = document.getElementById("usuario").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+
+    const res = await post("/login", { email, senha });
+    if (res.erro) { alert(res.erro); return; }
+
+    usuarioLogado = { nome: res.nome, email: res.email };
+    carregarContatosSalvos();
+    abrirChat();
 });
 
-function redirecionarCD(){
-    document.getElementById('tela_login').style.display = 'none';
-    document.getElementById('tela_cadastro').style.display = 'block';
+function abrirChat() {
+    document.getElementById("tela_login").style.display = "none";
+    document.getElementById("tela_cadastro").style.display = "none";
+    document.getElementById("chat_principal").style.display = "flex";
+    renderizarContatos();
 }
 
-function redirecionarLG(){
-    document.getElementById('tela_login').style.display = 'block';
-    document.getElementById('tela_cadastro').style.display = 'none';
+function redirecionarCD() {
+    document.getElementById("tela_login").style.display = "none";
+    document.getElementById("tela_cadastro").style.display = "block";
 }
 
-function cadastrar() {
-    const nome = document.getElementById("nome").value;
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha_cadastro").value;
+function redirecionarLG() {
+    document.getElementById("tela_login").style.display = "block";
+    document.getElementById("tela_cadastro").style.display = "none";
+}
 
-    if(!nome || !email || !senha) {
-        alert("Por favor, preencha todos os campos!");  
+async function cadastrar() {
+    const nome  = document.getElementById("nome").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const senha = document.getElementById("senha_cadastro").value.trim();
+
+    if (!nome || !email || !senha) { alert("Preencha todos os campos!"); return; }
+    if (!validaEmail(email)) { alert("Email inválido!"); return; }
+    if (!validaSenha(senha)) { alert("Senha inválida! Use 8+ caracteres, maiúsculas, minúsculas e números."); return; }
+
+    const res = await post("/cadastrar", { nome, email, senha });
+    if (res.erro) { alert(res.erro); return; }
+
+    alert("Cadastro realizado com sucesso!");
+    redirecionarLG();
+}
+
+function validaEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validaSenha(senha) {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(senha);
+}
+
+function chaveContatos() {
+    return "contatos_" + usuarioLogado.email;
+}
+
+function carregarContatosSalvos() {
+    const salvo = localStorage.getItem(chaveContatos());
+    contatos = salvo ? JSON.parse(salvo) : [];
+}
+
+function salvarContatos() {
+    localStorage.setItem(chaveContatos(), JSON.stringify(contatos));
+}
+
+async function adicionarNovoContato() {
+    const email = prompt("Digite o email do contato:");
+    if (!email) return;
+
+    if (email.toLowerCase() === usuarioLogado.email.toLowerCase()) {
+        alert("Você não pode adicionar a si mesmo!");
+        return;
+    }
+    if (contatos.find(c => c.email.toLowerCase() === email.toLowerCase())) {
+        alert("Contato já adicionado!");
         return;
     }
 
-    if (ValidaEmailSenha(email, senha)) {
-        const usuario = { nome, email, senha };
-        localStorage.setItem("usuario", JSON.stringify(usuario));
-        alert("Cadastro realizado com sucesso!");
-        redirecionarLG();
-    }
-}
+    const res = await get(`/buscarUsuario?email=${encodeURIComponent(email)}`);
+    if (res.erro) { alert("Usuário não encontrado!"); return; }
 
-function ValidaEmailSenha(email, senha) {
-    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  
-    const senhaValida = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
-    if (!emailValido.test(email)) {
-        alert("Email inválido!");
-        return false;
-    }
-
-    if (!senhaValida.test(senha)) {
-        alert("Senha inválida! Use 8 caracteres, maiúsculas, minúsculas e números.");
-        return false;
-    }
- 
-    return true;
-}
-
-const contatos = [
-  {
-    nome: "João",
-    mensagem: "E aí?",
-    foto: "https://i.pravatar.cc/150?u=joao"
-  },
-  {
-    nome: "Maria",
-    mensagem: "Tudo bem?",
-    foto: "https://i.pravatar.cc/150?u=maria"
-  }
-];
-
-function adicionarNovoContato() {
-  const nome = prompt("Nome do novo contato:");
-  if (!nome) return;
-  
-  const novo = {
-    nome: nome,
-    mensagem: "Nova conversa",
-    foto: `https://i.pravatar.cc/150?u=${nome}`
-  };
-  
-  contatos.push(novo);
-  renderizarContatos();
+    contatos.push({ nome: res.nome, email: res.email });
+    salvarContatos();
+    renderizarContatos();
+    alert(`${res.nome} adicionado com sucesso!`);
 }
 
 function renderizarContatos() {
-  const lista = document.getElementById("listaContatos");
-  lista.innerHTML = ""; 
-
-  contatos.forEach(contato => {
-    adicionarContato(contato.nome, contato.mensagem, contato.foto);
-  });
+    const lista = document.getElementById("listaContatos");
+    lista.innerHTML = "";
+    contatos.forEach(c => adicionarContatoNaLista(c));
 }
 
-function adicionarContato(nome, mensagem, foto) {
-  const template = document.getElementById("templateContato");
-  const clone = template.content.cloneNode(true);
-  const divContato = clone.querySelector(".contato");
+function adicionarContatoNaLista(contato) {
+    const template = document.getElementById("templateContato");
+    const clone = template.content.cloneNode(true);
+    const div = clone.querySelector(".contato");
 
-  divContato.querySelector(".nome").textContent = nome;
-  divContato.querySelector(".mensagem").textContent = mensagem;
-  divContato.querySelector(".foto").src = foto;
+    div.querySelector(".nome").textContent = contato.nome;
+    div.querySelector(".mensagem").textContent = contato.email;
+    div.querySelector(".foto").src = `https://i.pravatar.cc/150?u=${contato.email}`;
+    div.dataset.email = contato.email;
 
-  divContato.onclick = () => selecionarContato(nome, foto, divContato);
+    div.onclick = () => selecionarContato(contato, div);
 
-  const lista = document.getElementById("listaContatos");
-  if (lista) {
-    lista.appendChild(clone);
-  }
+    document.getElementById("listaContatos").appendChild(clone);
 }
 
-function selecionarContato(nome, foto, elemento) {
-    contatoSelecionado = nome;
+function selecionarContato(contato, elemento) {
+    if (intervaloPoll) clearInterval(intervaloPoll);
+    ultimoTimestamp = 0;
+
+    contatoSelecionado = contato;
+
+    document.querySelectorAll(".contato").forEach(c => c.classList.remove("selecionado"));
+    elemento.classList.add("selecionado");
+
+    document.getElementById("nomeContatoChat").textContent = contato.nome;
+    const img = document.getElementById("imgContatoChat");
+    img.src = `https://i.pravatar.cc/150?u=${contato.email}`;
+    img.style.display = "block";
 
 
-    document.querySelectorAll('.contato').forEach(c => c.classList.remove('selecionado'));
-    elemento.classList.add('selecionado');
+    document.getElementById("mensagensChat").innerHTML = "";
+    buscarMensagens();
 
-    // Atualizar Header do Chat
-    document.getElementById('nomeContatoChat').textContent = nome;
-    document.getElementById('imgContatoChat').src = foto;
-    document.getElementById('imgContatoChat').style.display = 'block';
 
-    carregarMensagens();
+    intervaloPoll = setInterval(buscarMensagens, 2000);
 }
 
-function carregarMensagens() {
-    const areaMensagens = document.getElementById('mensagensChat');
-    areaMensagens.innerHTML = '';
+async function buscarMensagens() {
+    if (!contatoSelecionado || !usuarioLogado) return;
 
-    const todasMensagens = JSON.parse(localStorage.getItem('mensagens_chat')) || {};
-    const mensagensDoContato = todasMensagens[contatoSelecionado] || [];
+    const url = `/mensagens?de=${encodeURIComponent(usuarioLogado.email)}&para=${encodeURIComponent(contatoSelecionado.email)}&desde=${ultimoTimestamp}`;
+    const msgs = await get(url);
 
-    mensagensDoContato.forEach(msg => {
-        exibirMensagemNoChat(msg.texto, msg.tipo);
+    if (!Array.isArray(msgs) || msgs.length === 0) return;
+
+    msgs.forEach(msg => {
+        const tipo = msg.de === usuarioLogado.email ? "enviado" : "recebido";
+        exibirMensagem(msg.texto, tipo);
+        if (msg.hora > ultimoTimestamp) ultimoTimestamp = msg.hora;
     });
-
-    areaMensagens.scrollTop = areaMensagens.scrollHeight;
 }
 
-function enviarMensagem() {
-    const input = document.getElementById('inputMensagem');
+async function enviarMensagem() {
+    const input = document.getElementById("inputMensagem");
     const texto = input.value.trim();
-
     if (!texto || !contatoSelecionado) return;
 
-    const todasMensagens = JSON.parse(localStorage.getItem('mensagens_chat')) || {};
-    if (!todasMensagens[contatoSelecionado]) {
-        todasMensagens[contatoSelecionado] = [];
-    }
+    input.value = "";
 
-    const novaMensagem = { texto, tipo: 'enviado' };
-    todasMensagens[contatoSelecionado].push(novaMensagem);
-    localStorage.setItem('mensagens_chat', JSON.stringify(todasMensagens));
+    const res = await post("/enviarMensagem", {
+        de:    usuarioLogado.email,
+        para:  contatoSelecionado.email,
+        texto: texto
+    });
 
-    // Exibir na tela
-    exibirMensagemNoChat(texto, 'enviado');
-    input.value = '';
+    if (res.erro) { alert("Erro ao enviar: " + res.erro); return; }
 
-    setTimeout(() => {
-        receberRespostaAutomatica();
-    }, 1000);
+    exibirMensagem(texto, "enviado");
+    ultimoTimestamp = Date.now();
 }
 
-function exibirMensagemNoChat(texto, tipo) {
-    const areaMensagens = document.getElementById('mensagensChat');
-    const divMensagem = document.createElement('div');
-    divMensagem.className = `balao ${tipo}`;
-    divMensagem.textContent = texto;
-    areaMensagens.appendChild(divMensagem);
-    
-    areaMensagens.scrollTop = areaMensagens.scrollHeight;
+function exibirMensagem(texto, tipo) {
+    const area = document.getElementById("mensagensChat");
+    const div = document.createElement("div");
+    div.className = `balao ${tipo}`;
+    div.textContent = texto;
+    area.appendChild(div);
+    area.scrollTop = area.scrollHeight;
 }
 
-function receberRespostaAutomatica() {
-    const todasMensagens = JSON.parse(localStorage.getItem('mensagens_chat')) || {};
-    const resposta = { texto: "Entendido!", tipo: 'recebido' };
-    
-    todasMensagens[contatoSelecionado].push(resposta);
-    localStorage.setItem('mensagens_chat', JSON.stringify(todasMensagens));
-    
-    exibirMensagemNoChat(resposta.texto, 'recebido');
-}
-
-document.getElementById('inputMensagem')?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') enviarMensagem();
+document.getElementById("inputMensagem")?.addEventListener("keypress", e => {
+    if (e.key === "Enter") enviarMensagem();
 });
-
-document.addEventListener("DOMContentLoaded", () => {
-});
-
-
