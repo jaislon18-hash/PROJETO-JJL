@@ -1,11 +1,11 @@
 
-const API = "http://localhost:8080";
-
+const API = "https://emphatic-cake-spoiled.ngrok-free.dev";
 let usuarioLogado = null;     
-let contatoSelecionado = null;   
+let contatoSelecionado = null;  
 let contatos = [];               
 let ultimoTimestamp = 0;         
 let intervaloPoll = null;        
+
 
 async function post(rota, dados) {
     const res = await fetch(API + rota, {
@@ -145,10 +145,8 @@ function selecionarContato(contato, elemento) {
     img.src = `https://i.pravatar.cc/150?u=${contato.email}`;
     img.style.display = "block";
 
-
     document.getElementById("mensagensChat").innerHTML = "";
     buscarMensagens();
-
 
     intervaloPoll = setInterval(buscarMensagens, 2000);
 }
