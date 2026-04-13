@@ -7,14 +7,10 @@ import java.util.concurrent.*;
 
 public class main {
 
-    // ── Armazenamento em memória ──────────────────────────────────────────────
     static Map<String, Map<String, String>> usuarios = new ConcurrentHashMap<>();
-    // chave: email → {nome, email, senha}
 
     static Map<String, List<Map<String, String>>> mensagens = new ConcurrentHashMap<>();
-    // chave: "emailA|emailB" (ordenado alfabeticamente) → lista de {de, texto, hora}
 
-    // ── Utilitários ──────────────────────────────────────────────────────────
     static String chaveConversa(String a, String b) {
         String[] par = {a.toLowerCase(), b.toLowerCase()};
         Arrays.sort(par);
